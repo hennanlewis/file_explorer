@@ -1,10 +1,24 @@
 {
     "icon_map": [
-        { "type": ["mp3", "ogg", "aac"], "icon": "audio-file.png" },
-        { "type": ["mp4", "avi", "mkv"], "icon": "video-file.png" },
-        { "type": ["jpg", "jpeg", "png", "gif"], "icon": "image-file.png" },
-        { "type": ["txt", "md"], "icon": "text-file.png" },
-        { "type": ["rar", "zip"], "icon": "zip-file.png" }
+        { "type": ["mp3", "ogg", "aac", "wav"], "icon": "audio-file.png" },
+        { "type": ["mp4", "avi", "mkv", "webm"], "icon": "video-file.png" },
+        { "type": ["jpg", "jpeg", "png", "gif", "webp", "ico", "svg"], "icon": "image-file.png" },
+        { "type": ["txt", "md", "json", "log"], "icon": "text-file.png" },
+        { "type": ["rar", "zip", "7zip", "tar"], "icon": "zip-file.png" },
+        { "type": ["iso"], "icon": "iso-file.png" },
+        { "type": ["pdf"], "icon": "svg/pdf-file.svg" },
+        { "type": ["html", "htm"], "icon": "svg/html5-file.svg" },
+        { "type": ["css"], "icon": "svg/css3-file.svg" },
+        { "type": ["js", "mjs"], "icon": "svg/javascript-file.svg" },
+        { "type": ["ts"], "icon": "svg/typescript-file.svg" },
+        { "type": ["py"], "icon": "svg/python-file.svg" },
+        { "type": ["jsx", "tsx"], "icon": "svg/react-file.svg" }
     ],
-    "mime_overrides": {}
+    "mime_overrides": {
+        "log": "text/plain",
+        ".ts": "text/plain",
+        ".tsx": "text/plain",
+        ".json": "application/json",
+        ".pdf": "application/pdf"
+    }
 }

@@ -3,7 +3,7 @@ import os
 import json
 from flask import current_app
 
-INLINE_PREFIXES = ("image/", "video/", "audio/", "text/")
+INLINE_PREFIXES = ("image/", "video/", "audio/", "text/", "application/json", "application/pdf")
 
 CONFIG_CACHE = None
 
