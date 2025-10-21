@@ -1,0 +1,10 @@
+{
+    "icon_map": [
+        { "type": ["mp3", "ogg", "aac"], "icon": "audio-file.png" },
+        { "type": ["mp4", "avi", "mkv"], "icon": "video-file.png" },
+        { "type": ["jpg", "jpeg", "png", "gif"], "icon": "image-file.png" },
+        { "type": ["txt", "md"], "icon": "text-file.png" },
+        { "type": ["rar", "zip"], "icon": "zip-file.png" }
+    ],
+    "mime_overrides": {}
+}
