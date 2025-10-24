@@ -1,0 +1,88 @@
+body {
+    background: linear-gradient(to bottom right, #0a74da, #082c6c);
+    color: #fff;
+    font-family: "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.blur-bg {
+    background: #000;
+}
+
+.login-box {
+    background: rgba(255, 255, 255, 0.08);
+    width: 20rem;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+
+    h2 {
+        text-align: center;
+    }
+
+    label, .buttons {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        gap: 0.25rem;
+
+        span {
+            color: #fff;
+        }
+    }
+    
+    .buttons {
+        gap: 0.5rem;
+    }
+}
+
+.message {
+    opacity: 0;
+    transition: opacity 0.3s easy;
+}
+
+.message.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.message.error {
+    color: #ffb3b3;
+}
+
+input {
+    box-sizing: border-box;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+input::placeholder {
+    color: #ddd;
+}
+
+button {
+    padding: 10px;
+    background: #0078d7;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #005fa3;
+}
