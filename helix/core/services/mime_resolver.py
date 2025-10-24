@@ -1,37 +1,29 @@
+from config.loader import load_json
 import mimetypes
 import os
-import json
-from flask import current_app
 
 INLINE_PREFIXES = ("image/", "video/", "audio/", "text/", "application/json", "application/pdf")
 
-CONFIG_CACHE = None
+def is_inline(mime: str) -> bool:
+    return any(mime.startswith(prefix) for prefix in INLINE_PREFIXES)
 
-def load_config():
-    global CONFIG_CACHE
-    if CONFIG_CACHE is None:
-        config_path = os.path.join(current_app.root_path, "config", "mime_map.json")
-        with open(config_path, "r", encoding="utf-8") as f:
-            CONFIG_CACHE = json.load(f)
-    return CONFIG_CACHE
-
-def get_mime_and_icon(filename):
-    config = load_config()
+def get_mime_and_icon(filename: str):
+    config = load_json("mime_map.json")
     icon_map = config.get("icon_map", [])
     mime_overrides = config.get("mime_overrides", {})
 
-    ext = "." + filename.split(".")[-1].lower()
+    _, ext = os.path.splitext(filename)
+    ext = ext.lower()
 
     mime = mime_overrides.get(ext, mimetypes.guess_type(filename)[0])
     if mime is None:
         mime = "application/octet-stream"
 
-    as_attachment = not mime.startswith(INLINE_PREFIXES)
+    as_attachment = not is_inline(mime)
 
-    icon = "file.png"
-    for entry in icon_map:
-        if ext[1:] in entry.get("type", []):
-            icon = entry.get("icon", "file.png")
-            break
+    icon = next(
+        (entry.get("icon", "file.png") for entry in icon_map if ext[1:] in entry.get("type", [])),
+        "file.png"
+    )
 
     return mime, icon, as_attachment
