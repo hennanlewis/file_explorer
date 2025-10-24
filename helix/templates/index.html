@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo</title>
+    <link rel="stylesheet" href="static/css/login.css">
+</head>
+
+<body>
+    <div class="login-box">
+        <h2>Helix File Manager</h2>
+
+        <input type="password" id="password" placeholder="Digite a senha do host">
+        <button onclick="login()">Entrar</button>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        function showNotification(text, isError = false) {
+            const messageElement = document.querySelector("#message")
+            messageElement.textContent = text
+            messageElement.classList.toggle("error", isError)
+            messageElement.classList.add("show")
+
+            setTimeout(() => messageElement.classList.remove("show"), 2500)
+        }
+
+        async function login() {
+            const password = document.querySelector("#password").value
+            if (!password) {
+                showNotification("Preencha todos os campos", true)
+                return null
+            }
+
+            try {
+                const res = await fetch("/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ password })
+                })
+
+                if (res.ok) {
+                    window.location.href = "/files"
+                } else {
+                    const data = await res.json()
+                    showNotification(data.error, true)
+                }
+            } catch (error) {
+                showNotification("Erro ao acessar arquivos", true)
+            }
+        }
+    </script>
+</body>
+
+</html>
