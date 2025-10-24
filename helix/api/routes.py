@@ -1,19 +1,48 @@
 from flask import Blueprint, request, jsonify, current_app
-import os
+import os, socket
+from core.server.state import set_base_dir, set_password, get_base_dir, get_password
 
 api_bp = Blueprint("api", __name__)
 
-@api_bp.route("/base-dir", methods=["POST"])
-def set_base_dir():
-    data = request.get_json()
-    if not data or "path" not in data:
-        return jsonify({"error": "Campo 'path' é obrigatório"}), 400
+def get_host_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except Exception:
+        return "127.0.0.1"
 
-    path = data["path"]
-    if not os.path.isdir(path):
-        return jsonify({"error": "Diretório inválido"}), 400
+HOST_IP = get_host_ip()
 
-    current_app.config["BASE_DIR"] = os.path.abspath(path)
-    current_app.logger.info(f"Diretório base definido: {path}")
+def is_host(request):
+    return request.remote_addr in ("127.0.0.1", "localhost", HOST_IP)
 
-    return jsonify({"message": "Diretório base configurado com sucesso.", "base_dir": path}), 200
+@api_bp.route("/config", methods=["GET", "POST"])
+def config():
+    if not is_host(request):
+        return jsonify({"error": "Acesso restrito ao host"}), 403
+
+    if request.method == "POST":
+        data = request.get_json() or {}
+        base_dir = data.get("base_dir")
+        password = data.get("password")
+
+        if base_dir and os.path.isdir(base_dir):
+            set_base_dir(os.path.abspath(base_dir))
+            current_app.config["BASE_DIR"] = base_dir
+        else:
+            return jsonify({"error": "Diretório inválido"}), 400
+
+        if password:
+            set_password(password)
+        else:
+            return jsonify({"error": "Senha é obrigatória"}), 400
+
+        return jsonify({"message": "Configurações salvas com sucesso"}), 200
+
+    return jsonify({
+        "base_dir": get_base_dir(),
+        "password": "******" if get_password() else None
+    })
