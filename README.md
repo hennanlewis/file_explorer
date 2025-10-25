@@ -61,9 +61,9 @@ uv run python main.py
 4. **Acesse no navegador:**
 ```bash
 # Host: 
-http://localhost:8080 (para configurar)
+http://localhost:8080 # para configurar
 # Cliente:
-http://[IP-DO-HOST]:8080 (para logar)
+http://[IP-DO-HOST]:8080 # para logar
 ```
 
 ## 📸 Como Usar
@@ -87,15 +87,15 @@ http://[IP-DO-HOST]:8080 (para logar)
 ## 🎯 Tipos de Arquivo Suportados
 | Tipo                    | Visualização   | Ícone                                                                       |
 | ----------------------- | -------------- | --------------------------------------------------------------------------- |
-| 📁 Pastas               | Próprio navegador | <img src="static/icons/folder.png" width="32" height="32" alt="Pastas">   |
-| 📄 Texto                | Próprio navegador | <img src="static/icons/text-file.png" width="32" height="32" alt="Texto">   |
-| 🖼️ Imagem              | Próprio navegador | <img src="static/icons/image-file.png" width="32" height="32" alt="Imagem"> |
-| 🎵 Áudio                | Próprio navegador | <img src="static/icons/audio-file.png" width="32" height="32" alt="Áudio">  |
-| 📹 Vídeo                | Próprio navegador | <img src="static/icons/video-file.png" width="32" height="32" alt="Vídeo">  |
-| 📊 PDF                  | Próprio navegador | <img src="static/icons/svg/pdf-file.svg" width="32" height="32" alt="PDF">  |
-| 📦 Outros | Arquivos apenas para baixar       | <img src="static/icons/file.png" width="32" height="32" alt="Arquivos mais gerais">      |
+| 📁 Pastas               | Próprio navegador | <img src="file_explorer/static/icons/folder.png" width="32" height="32" alt="Pastas">   |
+| 📄 Texto                | Próprio navegador | <img src="file_explorer/static/icons/text-file.png" width="32" height="32" alt="Texto">   |
+| 🖼️ Imagem               | Próprio navegador | <img src="file_explorer/static/icons/image-file.png" width="32" height="32" alt="Imagem"> |
+| 🎵 Áudio                | Próprio navegador | <img src="file_explorer/static/icons/audio-file.png" width="32" height="32" alt="Áudio">  |
+| 📹 Vídeo                | Próprio navegador | <img src="file_explorer/static/icons/video-file.png" width="32" height="32" alt="Vídeo">  |
+| 📊 PDF                  | Próprio navegador | <img src="file_explorer/static/icons/svg/pdf-file.svg" width="32" height="32" alt="PDF">  |
+| 📦 Outros | Arquivos apenas para baixar     | <img src="file_explorer/static/icons/file.png" width="32" height="32" alt="Arquivos mais gerais">      |
 
-Existem vários outros ícones para vários outros arquivos, veja a [pasta com todos](static/icons/).
+Existem vários outros ícones para vários outros arquivos, veja a [pasta com todos](file_explorer/static/icons/).
 
 
 ## 🔧 Desenvolvimento
@@ -108,7 +108,7 @@ Existem vários outros ícones para vários outros arquivos, veja a [pasta com t
 
 ### Adicionando Novos Ícones
 
-Adicione novos ícones em `static/icons/` e atualize `config/mime_map.json`
+Adicione novos ícones em `file_explorer/static/icons/` e atualize `config/mime_map.json`
 
 ## 🤝 Contribuindo
 Contribuições são bem-vindas! Sinta-se à vontade para:
