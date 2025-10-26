@@ -47,3 +47,15 @@ def logout():
     session.clear()
     logger.info(f"Logout realizado para IP: {client_ip}")
     return jsonify({"message": "Logout bem-sucedido"}), 200
+
+@auth_bp.route("/")
+def index():
+    client_ip = request.remote_addr
+    logger.info(f"Acesso à página inicial de {client_ip} - Host: {is_host_request(request)}")
+
+    if is_configured() and session.get("authenticated") and not is_host_request(request):
+        return redirect("/files")
+
+    if is_host_request(request):
+        return render_template("indexhost.html")
+    return render_template("index.html")

@@ -102,7 +102,7 @@
                     window.location.href = "/files"
                 } else {
                     const data = await res.json()
-                    showNotification(data.error, true)
+                    showNotification(data.message || data.error || "Erro inesperado", !res.ok)
                 }
             } catch (error) {
                 showNotification("Erro ao acessar arquivos", true)
