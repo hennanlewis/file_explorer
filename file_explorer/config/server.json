@@ -1,7 +1,0 @@
-{
-    "port": 8080,
-    "root_directory": null,
-    "default_theme": "light",
-    "enable_thumbnails": true,
-    "enable_auth": false
-}
