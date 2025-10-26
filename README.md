@@ -1,6 +1,6 @@
 # 🌐 Explorador de Arquivos em Rede
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Um explorador de arquivos web que permite acessar e visualizar arquivos do seu computador remotamente via navegador. Perfeito para assistir filmes, ouvir música ou transferir arquivos entre dispositivos na mesma rede.
@@ -9,7 +9,9 @@ Um explorador de arquivos web que permite acessar e visualizar arquivos do seu c
 
 - **📁 Navegação Remota**: Acesse arquivos do seu PC via celular ou outros dispositivos
 - **🎥 Visualização Direta**: Veja vídeos, imagens, textos e áudios diretamente no navegador
-- **🔒 Autenticação Simples**: Proteção por senha para acessar os arquivos
+- **🔒 Autenticação Segura**: Sistema de autenticação com hash SHA-256 e timeout de sessão volátil
+- **🛡️ Proteção contra Ataques**: Rate limiting e controle de tentativas de login
+- **🌐 Detecção Inteligente**: Reconhecimento automático de acesso local vs remoto
 - **📱 Interface Responsiva**: Funciona perfeitamente em desktop e mobile
 - **🎨 Ícones Personalizados**: Diferentes ícones para cada tipo de arquivo
 
@@ -22,7 +24,8 @@ Um explorador de arquivos web que permite acessar e visualizar arquivos do seu c
 ├── 📁 core/            # Núcleo da aplicação
 │   ├── 📁 logging/     # Sistema de logs
 │   ├── 📁 server/      # Estado do servidor
-│   └── 📁 services/    # Serviços principais
+│   ├── 📁 services/    # Serviços principais
+│   └── 📁 utils/       # Utilitários (rede, sessão, etc.)
 ├── 📁 modules/         # Módulos da aplicação
 │   ├── 📁 auth/        # Autenticação
 │   └── 📁 files/       # Gerenciamento de arquivos
@@ -34,6 +37,17 @@ Um explorador de arquivos web que permite acessar e visualizar arquivos do seu c
 └── 📄 main.py          # Ponto de entrada
 ```
 
+## ⚙️ Configuração de Segurança
+
+O sistema agora inclui configurações de segurança avançadas:
+
+- **SESSION_TIMEOUT**: Tempo máximo de sessão (padrão: 3600s)
+- **MAX_LOGIN_ATTEMPTS**: Tentativas de login permitidas (padrão: 5)
+- **SECRET_KEY**: Gerada automaticamente para segurança das sessões
+- **Hash SHA-256**: Senhas são armazenadas com hash seguro
+
+Para detalhes completos sobre as funcionalidades de segurança, consulte [SECURITY.md](doc/SECURITY.md)
+
 ## 🛠️ Instalação e Uso
 
 ### Pré-requisitos
@@ -44,7 +58,7 @@ Um explorador de arquivos web que permite acessar e visualizar arquivos do seu c
 
 1. **Clone o repositório**:
 ```bash
-git clone https://github.com/hennanlewis/helix
+git clone https://github.com/hennanlewis/file_explorer
 cd file_explorer
 ```
 
@@ -69,7 +83,7 @@ http://[IP-DO-HOST]:8080 # para logar
 ## 📸 Como Usar
 
 1. **Configuração do Host**:
-    - Acesse `http://localhost:8080`
+    - Acesse `http://localhost:8080` (reconhecimento automático como host)
     - Defina o caminho da pasta a ser compartilhada
     - Configure uma senha de acesso
 2. **Acesso do Cliente**:
