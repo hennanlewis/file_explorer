@@ -1,42 +1,49 @@
-from flask import Blueprint, render_template, request, jsonify, session
-from core.server.state import get_password
-import socket
+from flask import Blueprint, render_template, request, jsonify, session, redirect
+from modules.auth.service import validate_password, check_login_attempts, record_failed_attempt, reset_attempts
+from core.utils.network import is_host_request
+from core.utils.session import check_session_timeout
+from core.server.state import is_configured
+from functools import wraps
+import logging
+import time
 
 auth_bp = Blueprint("auth", __name__)
+logger = logging.getLogger(__name__)
 
-def get_host_ip():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
-        s.close()
-        return ip
-    except Exception:
-        return "127.0.0.1"
+def login_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        client_ip = request.remote_addr
+        if not check_session_timeout():
+            logger.warning(f"Tentativa de acesso não autenticado de {client_ip}")
+            return jsonify({"error": "Não autenticado"}), 401
+        logger.debug(f"Acesso autorizado para {client_ip} - {request.endpoint}")
+        return f(*args, **kwargs)
+    return decorated
 
-HOST_IP = get_host_ip()
-
-def is_host_request(req):
-    return req.remote_addr in ("127.0.0.1", "localhost", HOST_IP)
-
-@auth_bp.route("/", methods=["GET", "POST"])
-def index():
-    if is_host_request(request):
-        return render_template("indexhost.html")
-    else:
-        return render_template("index.html")
-    
 @auth_bp.route("/login", methods=["POST"])
 def login():
     data = request.get_json() or {}
     password = data.get("password")
+    client_ip = request.remote_addr
 
-    stored_password = get_password()
-    if not stored_password:
-        return jsonify({"error": "Servidor ainda não configurado"}), 400
+    if not check_login_attempts(client_ip):
+        return jsonify({"error": "Muitas tentativas. Tente novamente mais tarde."}), 429
 
-    if password == stored_password:
-        session["authenticated"] = True
-        return jsonify({"message": "Login bem-sucedido"}), 200
+    if not validate_password(password):
+        record_failed_attempt(client_ip)
+        return jsonify({"error": "Senha incorreta"}), 401
 
-    return jsonify({"error": "Senha incorreta"}), 401
+    session["authenticated"] = True
+    session["login_time"] = time.time()
+    session["client_ip"] = client_ip
+    reset_attempts(client_ip)
+    logger.info(f"Login bem-sucedido para IP: {client_ip}")
+    return jsonify({"message": "Login bem-sucedido"}), 200
+
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    client_ip = session.get("client_ip", "unknown")
+    session.clear()
+    logger.info(f"Logout realizado para IP: {client_ip}")
+    return jsonify({"message": "Logout bem-sucedido"}), 200
